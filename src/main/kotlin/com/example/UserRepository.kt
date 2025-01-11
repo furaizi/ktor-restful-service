@@ -6,4 +6,6 @@ interface UserRepository {
     fun findByUsername(username: String): User?
     fun findByEmail(email: String): User?
     fun findByRole(role: Role): User?
+    fun saveUser(user: User)
+    fun removeUser(id: Int): Boolean
 }
