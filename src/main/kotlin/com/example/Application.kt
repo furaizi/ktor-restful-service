@@ -5,6 +5,7 @@ import com.example.model.UserRepository
 import com.example.plugins.configureDatabases
 import com.example.plugins.configureRouting
 import com.example.plugins.configureSerialization
+import com.example.plugins.configureStatusPages
 import io.ktor.server.application.*
 
 fun main(args: Array<String>) {
@@ -14,7 +15,8 @@ fun main(args: Array<String>) {
 fun Application.module() {
     val repository = PostgresUserRepository();
 
-    configureSerialization(repository)
+    configureSerialization()
     configureDatabases()
-    configureRouting()
+    configureStatusPages()
+    configureRouting(repository)
 }

@@ -7,6 +7,7 @@ import com.example.db.suspendTransaction
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.lowerCase
+import org.jetbrains.exposed.sql.update
 
 class PostgresUserRepository : UserRepository {
     override suspend fun findAll(): List<User> = suspendTransaction {
@@ -41,13 +42,23 @@ class PostgresUserRepository : UserRepository {
             .map(::daoToModel)
     }
 
-    override suspend fun saveUser(user: User): Unit = suspendTransaction {
+    override suspend fun addUser(user: User): Unit = suspendTransaction {
         UserDAO.new {
             username = user.username
             password = user.password
             email = user.email
             role = user.role.name
             isBanned = user.isBanned
+        }
+    }
+
+    override suspend fun updateUser(user: User): Unit = suspendTransaction {
+        UserTable.update({ UserTable.id eq user.id }) {
+            it[username] = user.username
+            it[password] = user.password
+            it[email] = user.email
+            it[role] = user.role.name
+            it[isBanned] = user.isBanned
         }
     }
 

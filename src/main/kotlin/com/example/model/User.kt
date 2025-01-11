@@ -7,7 +7,7 @@ enum class Role {
 }
 
 @Serializable
-data class User(val id: Int,
+data class User(val id: Int? = null,
                 val username: String,
                 val password: String,
                 val email: String,
