@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS users (
     password VARCHAR(32) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     role VARCHAR(35) NOT NULL
-    isBanned BOOLEAN NOT NULL
+    is_banned BOOLEAN NOT NULL
 );
 
 INSERT INTO users (username, password, email, role, isBanned) VALUES
