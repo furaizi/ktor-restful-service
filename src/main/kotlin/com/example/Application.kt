@@ -1,5 +1,7 @@
 package com.example
 
+import com.example.model.PostgresUserRepository
+import com.example.model.UserRepository
 import com.example.plugins.configureDatabases
 import com.example.plugins.configureRouting
 import com.example.plugins.configureSerialization
@@ -10,7 +12,9 @@ fun main(args: Array<String>) {
 }
 
 fun Application.module() {
-    configureSerialization()
+    val repository = PostgresUserRepository();
+
+    configureSerialization(repository)
     configureDatabases()
     configureRouting()
 }
