@@ -13,7 +13,7 @@ class UserRepositoryTest {
         val actual = repository.findById(4)
 
         assertNotNull("User should be found", actual)
-        assertEquals("Users should be equals", expected, actual)
+        assertEquals("Users should be equal", expected, actual)
     }
 
     @Test
@@ -31,7 +31,7 @@ class UserRepositoryTest {
         val actual = repository.findByUsername("charlie")
 
         assertNotNull("User should be found", actual)
-        assertEquals("Users should be equals", expected, actual)
+        assertEquals("Users should be equal", expected, actual)
     }
 
     @Test
@@ -57,7 +57,7 @@ class UserRepositoryTest {
         val actual = repository.findByUsername("CHARLIE")
 
         assertNotNull("User should be found", actual)
-        assertEquals("Users should be equals", expected, actual)
+        assertEquals("Users should be equal", expected, actual)
     }
 
     @Test
@@ -67,7 +67,7 @@ class UserRepositoryTest {
         val actual = repository.findByEmail("hannah@example.com")
 
         assertNotNull("User should be found", actual)
-        assertEquals("Users should be equals", expected, actual)
+        assertEquals("Users should be equal", expected, actual)
     }
 
     @Test
@@ -85,7 +85,7 @@ class UserRepositoryTest {
         val actual = repository.findByEmail("HANNAH@example.com")
 
         assertNotNull("User should be found", actual)
-        assertEquals("Users should be equals", expected, actual)
+        assertEquals("Users should be equal", expected, actual)
     }
 
     @Test
@@ -96,4 +96,40 @@ class UserRepositoryTest {
         assertNull("User should not be found", actual)
     }
 
+    @Test
+    fun testFindByRealRole() = testApplication {
+        val repository = FakeUserRepository()
+        val expected = listOf(
+            User(4,	"david", "098f6bcd4621d373cade4e832627b4f6", "david@example.com",	Role.LEADER,	false),
+            User(10,"jack", "c81e728d9d4c2f636f067f89cc14862c", "jack@example.com",	Role.LEADER,	false)
+        )
+        val actual = repository.findByRole(Role.LEADER)
+
+        assertFalse("List should not be empty", actual.isEmpty())
+        assertEquals("Lists sizes should be equal", expected.size, actual.size)
+        assertEquals("Lists should be equal", expected, actual)
+    }
+
+    @Test
+    fun testAddUser() = testApplication {
+        val repository = FakeUserRepository()
+        val user = User(20, "test", "testpassword", "test@example.com", Role.ADMIN, true)
+        val result = repository.addUser(user)
+        assertTrue("addUser method should return true when successfully added", result)
+
+        val checkAdded = repository.findByUsername("test")
+        assertEquals("Users should be equal", user, checkAdded)
+    }
+
+    @Test
+    fun testRemoveRealUser() = testApplication {
+        val repository = FakeUserRepository()
+        val id = 4
+        val expectedUser = repository.findById(id)
+        val result = repository.removeUser(id)
+        assertTrue("removeUser method should return true when successfully removed", result)
+
+        val removedUser = repository.findById(id)
+        assertNull("Removed user should not be found", removedUser)
+    }
 }

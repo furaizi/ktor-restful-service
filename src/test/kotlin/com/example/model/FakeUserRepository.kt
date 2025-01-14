@@ -13,7 +13,6 @@ class FakeUserRepository {
         User(8,	"hannah", "e4d909c290d0fb1ca068ffaddf22cbd0", "hannah@example.com",	Role.USER,	false),
         User(9,	"ian", "d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2", "ian@example.com",	Role.USER,	true),
         User(10,"jack", "c81e728d9d4c2f636f067f89cc14862c", "jack@example.com",	Role.LEADER,	false)
-
     )
 
     fun findAll(): List<User> = users
@@ -26,9 +25,7 @@ class FakeUserRepository {
 
     fun findByRole(role: Role): List<User> = users.filter { it.role == role }
 
-    fun addUser(user: User) {
-        users.add(user)
-    }
+    fun addUser(user: User) = users.add(user)
 
     fun updateUser(user: User) {
         removeUser(user.id ?: return)
