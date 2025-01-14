@@ -50,4 +50,50 @@ class UserRepositoryTest {
         assertNull("User should not be found", actual)
     }
 
+    @Test
+    fun testFindByDifferentLetterCaseUsername() = testApplication {
+        val repository = FakeUserRepository()
+        val expected = User(3,	"charlie","9bf31c7ff062936a96d3c8bd1f1a1a2f", "charlie@example.com", Role.USER, true)
+        val actual = repository.findByUsername("CHARLIE")
+
+        assertNotNull("User should be found", actual)
+        assertEquals("Users should be equals", expected, actual)
+    }
+
+    @Test
+    fun testFindByRealEmail() = testApplication {
+        val repository = FakeUserRepository()
+        val expected = User(8,	"hannah", "e4d909c290d0fb1ca068ffaddf22cbd0", "hannah@example.com",	Role.USER,	false)
+        val actual = repository.findByEmail("hannah@example.com")
+
+        assertNotNull("User should be found", actual)
+        assertEquals("Users should be equals", expected, actual)
+    }
+
+    @Test
+    fun testFindByEmptyEmail() = testApplication {
+        val repository = FakeUserRepository()
+        val actual = repository.findByEmail("")
+
+        assertNull("User should not be found", actual)
+    }
+
+    @Test
+    fun testFindByDifferentLetterCaseEmail() = testApplication {
+        val repository = FakeUserRepository()
+        val expected = User(8,	"hannah", "e4d909c290d0fb1ca068ffaddf22cbd0", "hannah@example.com",	Role.USER,	false)
+        val actual = repository.findByEmail("HANNAH@example.com")
+
+        assertNotNull("User should be found", actual)
+        assertEquals("Users should be equals", expected, actual)
+    }
+
+    @Test
+    fun testFindByNonExistentEmail() = testApplication {
+        val repository = FakeUserRepository()
+        val actual = repository.findByEmail("test")
+
+        assertNull("User should not be found", actual)
+    }
+
 }
