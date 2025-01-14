@@ -1,6 +1,6 @@
 package com.example.model
 
-class FakeUserRepository : UserRepository {
+class FakeUserRepository {
 
     private val users = mutableListOf(
         User(1, "john", "12345678", "john@example.com", Role.USER, false),
@@ -16,24 +16,24 @@ class FakeUserRepository : UserRepository {
 
     )
 
-    override suspend fun findAll(): List<User> = users
+    fun findAll(): List<User> = users
 
-    override suspend fun findById(id: Int): User? = users.find { it.id == id }
+    fun findById(id: Int): User? = users.find { it.id == id }
 
-    override suspend fun findByUsername(username: String): User? = users.find { it.username == username }
+    fun findByUsername(username: String): User? = users.find { it.username.equals(username, ignoreCase = true) }
 
-    override suspend fun findByEmail(email: String): User? = users.find { it.email == email }
+    fun findByEmail(email: String): User? = users.find { it.email.equals(email, ignoreCase = true) }
 
-    override suspend fun findByRole(role: Role): List<User> = users.filter { it.role == role }
+    fun findByRole(role: Role): List<User> = users.filter { it.role == role }
 
-    override suspend fun addUser(user: User) {
+    fun addUser(user: User) {
         users.add(user)
     }
 
-    override suspend fun updateUser(user: User) {
+    fun updateUser(user: User) {
         removeUser(user.id ?: return)
         addUser(user)
     }
 
-    override suspend fun removeUser(id: Int): Boolean = users.removeIf { it.id == id }
+    fun removeUser(id: Int): Boolean = users.removeIf { it.id == id }
 }
