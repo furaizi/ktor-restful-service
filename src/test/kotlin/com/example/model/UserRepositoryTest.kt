@@ -124,12 +124,45 @@ class UserRepositoryTest {
     @Test
     fun testRemoveRealUser() = testApplication {
         val repository = FakeUserRepository()
-        val id = 4
-        val expectedUser = repository.findById(id)
-        val result = repository.removeUser(id)
+        val realId = 4
+        val result = repository.removeUser(realId)
         assertTrue("removeUser method should return true when successfully removed", result)
 
-        val removedUser = repository.findById(id)
+        val removedUser = repository.findById(realId)
         assertNull("Removed user should not be found", removedUser)
+    }
+
+    @Test
+    fun testRemoveNonExistentUser() = testApplication {
+        val repository = FakeUserRepository()
+        val nonExistentId = 100
+        val result = repository.removeUser(nonExistentId)
+        assertFalse("removeUser method should return false when unsuccessfully removed", result)
+
+        val nonExistentUser = repository.findById(nonExistentId)
+        assertNull("Non-existent user should not be found", nonExistentUser)
+    }
+
+    @Test
+    fun testUpdateRealUser() = testApplication {
+        val repository = FakeUserRepository()
+        val obsolete = repository.findById(6)
+        val expected = User(6,	"frank", "newpassword", "frank@example.com",	Role.USER,	false)
+        repository.updateUser(expected)
+        val actual = repository.findById(6)
+
+        assertNotNull("User should exist before update", obsolete)
+        assertNotNull("User should be found", actual)
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun testUpdateNonExistentUser() = testApplication {
+        val repository = FakeUserRepository()
+        val nonExistent = User(100, "test", "test", "test@example.com", Role.ADMIN, true)
+        repository.updateUser(nonExistent)
+
+        val actual = repository.findById(100)
+        assertNull("Non existent user should not be added and therefore updated", actual)
     }
 }

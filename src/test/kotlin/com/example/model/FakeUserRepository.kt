@@ -28,8 +28,8 @@ class FakeUserRepository {
     fun addUser(user: User) = users.add(user)
 
     fun updateUser(user: User) {
-        removeUser(user.id ?: return)
-        addUser(user)
+        if (removeUser(user.id ?: return))
+            addUser(user)
     }
 
     fun removeUser(id: Int): Boolean = users.removeIf { it.id == id }
